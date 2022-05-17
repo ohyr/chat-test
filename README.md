@@ -2,3 +2,21 @@
 
 - backend : node.js
 - frontend : react.js
+
+## Run command
+
+### Backend
+
+```bash
+cd backend
+npm i
+node index.js
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm i
+npm run dev
+```
