@@ -3,6 +3,7 @@ import { io } from "socket.io-client";
 
 function Chat() {
   const [msg, setMsg] = useState("");
+  const [messages, setMessages] = useState([]);
 
   const socket = io("http://localhost:9997");
 
@@ -14,7 +15,13 @@ function Chat() {
     console.log(socket.id);
   });
 
-  const handleSumbit = () => {};
+  socket.on("chat message", (msg) => {
+    setMessages(messages.concat(msg));
+  });
+
+  const handleSumbit = () => {
+    socket.emit("chat message", msg);
+  };
 
   return (
     <>
@@ -24,9 +31,10 @@ function Chat() {
           send
         </button>
       </p>
-      <p>
-        Edit <code>App.jsx</code> and save to test HMR updates.
-      </p>
+      {messages.map((message, index) => (
+        <div key={index}>{message}</div>
+      ))}
+      <p>Chat & Listen user's messages</p>
     </>
   );
 }
