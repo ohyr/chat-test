@@ -20,3 +20,7 @@ cd frontend
 npm i
 npm run dev
 ```
+
+## Reference
+
+- [socket.io](https://socket.io/)
