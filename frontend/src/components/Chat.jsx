@@ -1,26 +1,44 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
 function Chat() {
   const [msg, setMsg] = useState("");
   const [messages, setMessages] = useState([]);
+  const [socket, setSocket] = useState(io("http://localhost:9997"));
 
-  const socket = io("http://localhost:9997");
+  useEffect(() => {
+    const socketIo = io("http://localhost:9997");
 
-  socket.on("connect", () => {
-    console.log(socket.id);
-  });
+    socketIo.on("connect", () => {
+      console.log("connect!");
+    });
 
-  socket.on("disconnect", () => {
-    console.log(socket.id);
-  });
+    socketIo.on("disconnect", () => {
+      console.log("disconnect...");
+    });
 
-  socket.on("chat message", (msg) => {
-    setMessages(messages.concat(msg));
-  });
+    socketIo.on("chat message", (msg) => {
+      handleListening(msg);
+    });
+
+    setSocket(socketIo);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (socket) {
+        socket.disconnect();
+      }
+    };
+  }, [socket]);
+
+  const handleListening = (msg) => {
+    setMessages((msgs) => msgs.concat(msg));
+  };
 
   const handleSumbit = () => {
     socket.emit("chat message", msg);
+    console.log("socket id: ", socket.id);
   };
 
   return (
