@@ -21,6 +21,11 @@ io.on("connection", (socket) => {
     io.emit("chat message", msg);
   });
 
+  socket.on("move virtual position", (pos) => {
+    io.emit("move virtual position", pos);
+    console.log(pos);
+  });
+
   socket.on("disconnect", () => {
     console.log("disconnected!");
   });
