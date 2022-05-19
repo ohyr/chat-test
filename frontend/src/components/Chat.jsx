@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-function Chat() {
+function Chat({ nickname }) {
   const [msg, setMsg] = useState("");
   const [messages, setMessages] = useState([]);
   const [socket, setSocket] = useState(io("http://localhost:9997"));
@@ -43,10 +43,11 @@ function Chat() {
 
   return (
     <>
+      <p>Hello {nickname} !</p>
       <p style={{ display: "flex" }}>
         <input onChange={(e) => setMsg(e.target.value)} />
         <button type="button" onClick={handleSumbit}>
-          send
+          Send
         </button>
       </p>
       {messages.map((message, index) => (
