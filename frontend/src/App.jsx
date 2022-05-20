@@ -29,7 +29,15 @@ function App() {
             <p>Hello Vite + React Chatting!</p>
             <p style={{ display: "flex" }}>
               {`Set your nickname -> `}
-              <input onChange={(e) => setNickname(e.target.value)} />
+              <input
+                onChange={(e) => setNickname(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleJoin();
+                  }
+                  return;
+                }}
+              />
               <button type="button" onClick={handleJoin}>
                 Join
               </button>
