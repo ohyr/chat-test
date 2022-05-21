@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 
 function Chat({ nickname }) {
-  const msgBoxRef = useRef(null);
-  const [msg, setMsg] = useState("");
+  const messageBoxRef = useRef(null);
+  const [content, setContent] = useState("");
   const [messages, setMessages] = useState([]);
   const [socket, setSocket] = useState(io("http://localhost:9997"));
 
@@ -18,8 +18,8 @@ function Chat({ nickname }) {
       console.log("disconnect...");
     });
 
-    socketIo.on("chat message", (msg) => {
-      handleListening(msg);
+    socketIo.on("chat message", (message) => {
+      handleListening(message);
     });
 
     setSocket(socketIo);
@@ -38,19 +38,19 @@ function Chat({ nickname }) {
   }, [messages]);
 
   const scrollToBottom = () => {
-    if (msgBoxRef.current) {
-      msgBoxRef.current.scrollTop = msgBoxRef.current.scrollHeight;
+    if (messageBoxRef.current) {
+      messageBoxRef.current.scrollTop = messageBoxRef.current.scrollHeight;
     }
   };
 
-  const handleListening = (msg) => {
-    setMessages((msgs) => msgs.concat(msg));
+  const handleListening = (message) => {
+    setMessages((prev) => prev.concat(JSON.parse(message)));
   };
 
   const handleSubmit = () => {
-    socket.emit("chat message", msg);
+    socket.emit("chat message", JSON.stringify({ nickname, content }));
     console.log("socket id: ", socket.id);
-    setMsg("");
+    setContent("");
   };
 
   return (
@@ -58,21 +58,21 @@ function Chat({ nickname }) {
       <div>Hello {nickname} !</div>
       <p style={{ display: "flex" }}>
         <input
-          onChange={(e) => setMsg(e.target.value)}
+          onChange={(e) => setContent(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               handleSubmit();
             }
             return;
           }}
-          value={msg}
+          value={content}
         />
         <button type="button" onClick={handleSubmit}>
           Send
         </button>
       </p>
       <div
-        ref={msgBoxRef}
+        ref={messageBoxRef}
         style={{
           width: "min(730px, 75%)",
           height: "30vh",
@@ -83,7 +83,7 @@ function Chat({ nickname }) {
       >
         {messages.map((message, index) => (
           <div key={index} style={{ margin: 4 }}>
-            {message}
+            {`${message.nickname}: ${message.content}`}
           </div>
         ))}
       </div>
