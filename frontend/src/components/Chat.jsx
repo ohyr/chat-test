@@ -74,14 +74,17 @@ function Chat({ nickname }) {
       <div
         ref={msgBoxRef}
         style={{
-          width: "min(375px, 60%)",
-          height: "20vh",
+          width: "min(730px, 75%)",
+          height: "30vh",
           overflowY: "auto",
           textAlign: "left",
+          backgroundColor: "black",
         }}
       >
         {messages.map((message, index) => (
-          <div key={index}>{message}</div>
+          <div key={index} style={{ margin: 4 }}>
+            {message}
+          </div>
         ))}
       </div>
       <p>Chat & Listen user's messages</p>
