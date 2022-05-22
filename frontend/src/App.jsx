@@ -37,6 +37,7 @@ function App() {
                   }
                   return;
                 }}
+                autoFocus
               />
               <button type="button" onClick={handleJoin}>
                 Join

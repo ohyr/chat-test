@@ -66,6 +66,7 @@ function Chat({ nickname }) {
             return;
           }}
           value={content}
+          autoFocus
         />
         <button type="button" onClick={handleSubmit}>
           Send
