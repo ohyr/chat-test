@@ -5,7 +5,7 @@ function Chat({ nickname }) {
   const messageBoxRef = useRef(null);
   const [content, setContent] = useState("");
   const [messages, setMessages] = useState([]);
-  const [socket, setSocket] = useState(io("http://localhost:9997"));
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     const socketIo = io("http://localhost:9997");
