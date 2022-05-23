@@ -12,14 +12,19 @@ function Chat({ nickname }) {
 
     socketIo.on("connect", () => {
       console.log("connect!");
+      socketIo.emit("join", nickname);
     });
 
     socketIo.on("disconnect", () => {
       console.log("disconnect...");
     });
 
+    socketIo.on("join", (user) => {
+      handleJoinListening(user);
+    });
+
     socketIo.on("chat message", (message) => {
-      handleListening(message);
+      handleChatListening(message);
     });
 
     setSocket(socketIo);
@@ -43,8 +48,13 @@ function Chat({ nickname }) {
     }
   };
 
-  const handleListening = (message) => {
-    setMessages((prev) => prev.concat(JSON.parse(message)));
+  const handleJoinListening = (user) => {
+    setMessages((prev) => prev.concat(`-> ${user} 님이 입장하셨습니다.`));
+  };
+
+  const handleChatListening = (message) => {
+    const m = JSON.parse(message);
+    setMessages((prev) => prev.concat(`${m.nickname}: ${m.content}`));
   };
 
   const handleSubmit = () => {
@@ -84,7 +94,7 @@ function Chat({ nickname }) {
       >
         {messages.map((message, index) => (
           <div key={index} style={{ margin: 4 }}>
-            {`${message.nickname}: ${message.content}`}
+            {message}
           </div>
         ))}
       </div>

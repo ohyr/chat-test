@@ -17,6 +17,10 @@ app.get("/", (req, res) => {
 io.on("connection", (socket) => {
   console.log("connected!");
 
+  socket.on("join", (user) => {
+    io.emit("join", user);
+  });
+
   socket.on("chat message", (msg) => {
     io.emit("chat message", msg);
   });
