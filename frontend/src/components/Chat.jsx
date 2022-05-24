@@ -17,10 +17,15 @@ function Chat({ nickname }) {
 
     socketIo.on("disconnect", () => {
       console.log("disconnect...");
+      socketIo.emit("leave", nickname);
     });
 
     socketIo.on("join", (user) => {
       handleJoinListening(user);
+    });
+
+    socketIo.on("leave", (user) => {
+      handleLeaveListening(user);
     });
 
     socketIo.on("chat message", (message) => {
@@ -50,6 +55,10 @@ function Chat({ nickname }) {
 
   const handleJoinListening = (user) => {
     setMessages((prev) => prev.concat(`-> ${user} 님이 입장하셨습니다.`));
+  };
+
+  const handleLeaveListening = (user) => {
+    setMessages((prev) => prev.concat(`<- ${user} 님이 퇴장하셨습니다.`));
   };
 
   const handleChatListening = (message) => {

@@ -21,12 +21,17 @@ io.on("connection", (socket) => {
     io.emit("join", user);
   });
 
+  socket.on("leave", (user) => {
+    io.emit("leave", user);
+  });
+
   socket.on("chat message", (msg) => {
     io.emit("chat message", msg);
   });
 
   socket.on("disconnect", () => {
     console.log("disconnected!");
+    io.emit("leave", "누군가");
   });
 });
 
