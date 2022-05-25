@@ -15,13 +15,19 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-  console.log("connected!");
+  console.log("connected!", socket.id);
+
+  const userInfo = [];
 
   socket.on("join", (user) => {
+    console.log("join!", user, socket.id);
+
+    userInfo[socket.id] = user;
     io.emit("join", user);
   });
 
   socket.on("leave", (user) => {
+    console.log("leave!", user, socket.id);
     io.emit("leave", user);
   });
 
@@ -30,8 +36,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("disconnected!");
-    io.emit("leave", "누군가");
+    console.log("disconnected!", socket.id);
+    io.emit("leave", userInfo[socket.id]);
   });
 });
 
