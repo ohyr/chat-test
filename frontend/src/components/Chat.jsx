@@ -54,16 +54,28 @@ function Chat({ nickname }) {
   };
 
   const handleJoinListening = (user) => {
-    setMessages((prev) => prev.concat(`-> ${user} 님이 입장하셨습니다.`));
+    const newMsg = {
+      content: `-> ${user} 님이 입장하셨습니다.`,
+      color: `green`,
+    };
+    setMessages((prev) => prev.concat(newMsg));
   };
 
   const handleLeaveListening = (user) => {
-    setMessages((prev) => prev.concat(`<- ${user} 님이 퇴장하셨습니다.`));
+    const newMsg = {
+      content: `<- ${user} 님이 퇴장하셨습니다.`,
+      color: `red`,
+    };
+    setMessages((prev) => prev.concat(newMsg));
   };
 
   const handleChatListening = (message) => {
     const m = JSON.parse(message);
-    setMessages((prev) => prev.concat(`${m.nickname}: ${m.content}`));
+    const newMsg = {
+      content: `${m.nickname}: ${m.content}`,
+      color: `white`,
+    };
+    setMessages((prev) => prev.concat(newMsg));
   };
 
   const handleSubmit = () => {
@@ -102,8 +114,8 @@ function Chat({ nickname }) {
         }}
       >
         {messages.map((message, index) => (
-          <div key={index} style={{ margin: 4 }}>
-            {message}
+          <div key={index} style={{ margin: 4, color: `${message.color}` }}>
+            {message.content}
           </div>
         ))}
       </div>
