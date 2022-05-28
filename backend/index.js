@@ -35,6 +35,10 @@ io.on("connection", (socket) => {
     io.emit("chat message", msg);
   });
 
+  socket.on("user list", () => {
+    io.emit("user list", userInfo);
+  });
+
   socket.on("disconnect", () => {
     console.log("disconnected!", socket.id);
     io.emit("leave", userInfo[socket.id]);
